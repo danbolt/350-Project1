@@ -7,6 +7,8 @@
 \usepackage[toc]{glossaries}
 \usepackage{amsmath}
 \usepackage{listings} 
+\usepackage{graphicx}
+\usepackage{wrapfig}
 
 \definecolor{grey}{rgb}{0.9,0.9,0.9}
 \lstset{%
@@ -90,14 +92,28 @@ LDA $0F ; load memory $000F using zero page addressing (faster)
 LDA $000F ; load memory $000F using normal addressing (slower)
 \end{lstlisting}
 
+\pagebreak
+
 \subsubsection{6510 Specific Features}
-Foo foo boring bar
+\paragraph{}
+\begin{wrapfigure}{l}{0.35\textwidth}
+\vspace{-20pt}
+\caption{6510 pin layout}
+\begin{center}
+\includegraphics[width=3cm]{6510}
+\end{center}
+\end{wrapfigure}
+The MOS Technology 6510 is a variant of the 6502 microprocessor, accompanied with an I/O port of either six or eight bits wide. The Commodore 64 uses the 6-bit version of this port to interact switch between RAM and ROM, as well as access to tertiary memory, such as a datacasette. The 6510 can also make its address lines become tristate, allowing it to share memory with other devices, such as the SID and the VIC-II. Since RAM, ROM, and I/O registers are all mapped to the same address space, the Commodore 64 can distinguish between the three through the $P0$ and $P1$ lines for accessing ROM, and the $P2$ line for the I/O registers. $P3$, $P4$, and $P5$ are used to operate the datacasette.
+
 
 \subsection{MOS 6567 VIC-II}
+asdasd
 
 \subsection{MOS 6581 SID}
+adasdasdasd
 
 \subsection{MOS 6526 CIA}
+asdasdas
 
 \section{Strengths}
 
