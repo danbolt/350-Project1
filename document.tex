@@ -34,10 +34,20 @@ foo foo bar
 \section{The architecture}
 
 \subsection{Overview}
+\paragraph{}
+The Commodore 64 consists of a single board, housed in plastic. To many enthusiasts, what defines the Commodore 64 compared to other computers of similar architectures is its unique configuration particular chips. What typically defines the Commodore 64 can typically considered to be the following:
+\begin{itemize}
+\item The MOS Technology 6510 CPU
+\item The MOS Technology 6567 VIC-II
+\item The MOS Technology 6581 SID
+\item The MOS Technology 6526 CIAx2
+\end{itemize}
+\paragraph{}
+This section will attempt to provide an overview of the system memory, each of these devices, and how they interact with each other in a high-level fashion.
 
 \subsection{Memory}
 \paragraph{}
-The Commodore 64's CPU has a 16-bit address space, allowing for 64KiB of possible addresses, although various RAM, ROM, and I/O devices are mapped to the same address space. Access to the various spaces on the Commodore 64 happens through bank switching various device lines. This section will give a brief description of each memory device in general, their typical purpose, and also a map of their locations in address space.
+The Commodore 64's CPU has a 16-bit address space, allowing for 64KiB of possible addresses, although various RAM, ROM, and I/O devices are mapped to the same address space. Access to the various spaces on the Commodore 64 happens through bank switching various device lines. This section will give a brief description of each memory device in general, their typical purpose, and also a map of their locations in address space. Throughout the course of this document we will refer to sections of memory in their hexadecimal format. For example, the entire range of the 16-bit address space can be represented as $\mathtt{\$0000 - \$FFFF}$.
 
 \subsubsection{RAM}
 \paragraph{}
