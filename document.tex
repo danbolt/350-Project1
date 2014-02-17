@@ -78,7 +78,11 @@ There are three pieces of ROM wired to the Commodore 64: the system KERNAL, a CH
 The Commodore 64 can colour characters in its on-screen display by using the system's built-in Color RAM. The Color RAM is 1KB in size, and the first nibble of each byte is used to determine the colour of of each character. Colours are determined with the Commodore 64's built-in fixed colour palette, consisting of 16 possible colours. A programmer wishing to change Color RAM data in Commodore BASIC would often modify the values through the $\mathtt{POKE}$ command, while someone using assembly would need to address the particular section in memory. Color RAM is mapped to locations $\mathtt{\$D800 - \$DBFF}$, when the I/O devices are mapped to memory.
 
 \subsubsection{Memory Map}
-\[\textcolor{red}{FIGURE}\]
+\begin{figure}[h!]
+  \centering
+    \includegraphics[width=\textwidth]{memmap}
+  \caption{The Commodore 64 memory mapping. Each column shows the various address spaces that can be activated and deactivated through bank switching. \textcolor{red}{CITE}}
+\end{figure}
 
 \subsection{MOS 6510 CPU}
 \paragraph{}
