@@ -9,6 +9,7 @@
 \usepackage{listings} 
 \usepackage{graphicx}
 \usepackage{wrapfig}
+\usepackage{url}
 
 \definecolor{grey}{rgb}{0.9,0.9,0.9}
 \lstset{%
@@ -81,7 +82,7 @@ The Commodore 64 can colour characters in its on-screen display by using the sys
 \begin{figure}[h!]
   \centering
     \includegraphics[width=\textwidth]{memmap}
-  \caption{The Commodore 64 memory mapping. Each column shows the various address spaces that can be activated and deactivated through bank switching. \textcolor{red}{CITE}}
+  \caption{The Commodore 64 memory mapping. Each column shows the various address spaces that can be activated and deactivated through bank switching. Source: \cite{memMap}}
 \end{figure}
 
 \subsection{MOS 6510 CPU}
@@ -137,7 +138,7 @@ LDA $000F ; load memory $000F using normal addressing (slower)
 \vspace{-20pt}
 \begin{center}
 \includegraphics[width=3cm]{6510}
-\caption{6510 pin layout}
+\caption{6510 pin layout. Source: \cite{c64_tech_details}}
 \end{center}
 \end{wrapfigure}
 The MOS Technology 6510 is a variant of the 6502 microprocessor, accompanied with an I/O port of either six or eight bits wide. The Commodore 64 uses the 6-bit version of this port to interact switch between RAM and ROM, as well as access to tertiary memory, such as a datacasette. The 6510 can also make its address lines become tristate, allowing it to share memory with other devices, such as the SID and the VIC-II. Since RAM, ROM, and I/O registers are all mapped to the same address space, the Commodore 64 can distinguish between the three through the $P0$ and $P1$ lines for accessing ROM and external registers on the SID, CIAs and VIC-II, and the $P2$ line for the I/O registers. $P3$, $P4$, and $P5$ are used to operate a datacasette.
@@ -151,7 +152,7 @@ The 6510 operates around 1MHz, with particular differences whether or not it is 
 \vspace{-20pt}
 \begin{center}
 \includegraphics[width=3cm]{6567}
-\caption{6567 VIC-II pin layout}
+\caption{6567 VIC-II pin layout. Source: \cite{c64_tech_details}}
 \end{center}
 \end{wrapfigure}
 The MOS Technology VIC-II is the device tasked with graphical output for the Commodore 64. It consists of two models, the 6567, used in NTSC chipsets, and the 6569 in the PAL ones. The chip is primarily responsible for interpreting various elements of RAM as video memory, then outputting that as composite video signals for a low-cost display, such as a CRT monitor. This section will briefly explain the VIC-II's hardware, rendering modes, and how the device is typically programmed.
@@ -184,7 +185,7 @@ The MOS Technology 6581 Sound Interface Device, or SID is the programmable sound
 \vspace{-20pt}
 \begin{center}
 \includegraphics[width=3.5cm]{6581}
-\caption{6581 SID pin layout}
+\caption{6581 SID pin layout. Source: \cite{c64_tech_details}}
 \end{center}
 \end{wrapfigure}
 The SID's chief feature was that it allowed for three programmable distinct audio oscillators, each able to produce up to four different sound waveforms (sawtooth waves, triangle waves, pulse waves, as well as white noise). The SID was capable of commanding control of pitch, tone, and dynamics of the sounds it played. The SID also had analog-to-digital input lines, allowing for input from devices such as mice or paddles. Also due to the fact that the device is able to produce white noise, a random number generator is also provided for the 6502 to use. Random numbers and noise are generated through a 23-bit linear feedback shift register.
@@ -218,13 +219,120 @@ Overall, the Commodore 64 is notable example of how a significantly \textit{diff
 
 \begin{thebibliography}{9}
 
-\bibitem{lamport94}
-  Leslie Lamport,
-  \emph{\LaTeX: A Document Preparation System}.
-  Addison Wesley, Massachusetts,
-  2nd Edition,
-  1994.
+\bibitem{c64_arch}
+  \emph{C64 Hardware and Architecture}.\\
+  http://www.skinfaxi.com/cli/C64/hardarch.htm
+  
+\bibitem{cp_wiki}
+  \emph{The Commodore Programming Wiki}.\\
+  http://commodore64.wikispaces.com/
+  
+\bibitem{blog_cp}
+   \emph{A Blog from the 80's about C64 Programming}.\\
+   http://c64programming.wordpress.com/
 
+\bibitem{c64_tech_details}
+   \emph{Commodore 64 - Technical Details}.\\
+   MJK's Commodore 64 \& LCD Page,
+   http://ist.uwaterloo.ca/\textasciitilde{}schepers/MJK/c64\_\_.html
+   
+\bibitem{refGuide}
+   \emph{Commodore 64 Programmer's Reference Guide}.\\
+   Commodore Business Machines Inc.\\
+   http://www.commodore.ca/manuals/c64\_programmers\_reference/c64-programmers\_reference.htm
+
+\bibitem{6502org}
+   \emph{6502.org}.\\
+   http://http://6502.org/
+
+\bibitem{6502class}
+   \emph{6502 class IC's}.\\
+   cpu-collection.de\\
+   http://www.cpu-collection.de/?tn=1\&l0=cl\&l1=650x
+
+\bibitem{bestLayout}
+   \emph{The MOS 6502 and the Best Layout Guy in the World}.\\
+   Russ Cox\\
+   research!rsc\\
+   http://research.swtch.com/6502
+
+\bibitem{reconstruction}
+   \emph{Reconstruction of the MOS 6502 on the Cyclone II FPGA}.\\
+   Chen, Choi, Sundaram, and Erlinger\\
+   http://www.cs.columbia.edu/\textasciitilde{}sedwards/classes/2013/4840/reports/6502.pdf
+
+\bibitem{twoClock}
+   \emph{The 6502's two clock signals}.\\
+   http://lateblt.livejournal.com/88105.html
+
+\bibitem{nesProg}
+   \emph{NES Programming/Introduction}.\\
+   WikiBooks - NES Programming\\
+   http://en.wikibooks.org/w/index.php?title=NES\_Programming/Introduction\&oldid=2364817 \\
+   Current revision as of 17-02-2013
+
+\bibitem{zeroPage}
+   \emph{Zero Page}.\\
+   Game Design Novice\\
+   http://gamedesign.wikidot.com/6502:zero-page
+   
+\bibitem{easy6502}
+   \emph{Easy 6502}.\\
+   Nick Morgan \\
+   GitHub \\
+   http://skilldrick.github.io/easy6502/
+   
+\bibitem{opcodes}
+   \emph{6502 Assembly}.\\
+   WikiBooks\\
+   http://en.wikibooks.org/w/index.php?title=6502\_Assembly\&oldid=2597563 \\
+   Current revision as of 17-02-2013
+   
+\bibitem{6510sheet}
+   \emph{6510 Microprocessor With I/O}.\\
+   Commodore Semiconductor Group \\
+   http://archive.6502.org/datasheets/mos\_6510\_mpu.pdf
+   
+   \bibitem{6560sheet}
+   \emph{660/6561 Video Interface Chip}.\\
+   Commodore Semiconductor Group \\
+  http://www.mdawson.net/vic20chrome/display/mos\_6560\_6561\_vic.pdf
+   
+\bibitem{c64_memMap}
+   \emph{Commodore 64 Memory maps}.\\
+   Project 64, 1996\\
+   http://unusedino.de/ec64/technical/project64/memory\_maps.html
+      
+\bibitem{memMap}
+   \emph{Memory Map}.\\
+   Commodore 64 Wiki \\
+   http://www.c64-wiki.com/index.php?title=Memory\_Map\&oldid=17227
+   Current revision as of 17-02-2013
+      
+\bibitem{}
+   \emph{VIC-II Reference}.\\
+   8-bit register reference
+   Oxyron \\
+   http://www.oxyron.de/html/registers\_vic2.html
+  
+   \bibitem{ars}
+   \emph{Total share: 30 years of personal computer market share figures}.\\
+   Jeremy Reimer, 2005 \\
+   Ars Technica
+   http://arstechnica.com/features/2005/12/total-share/
+     
+   \bibitem{caseHistory}
+   \emph{Design case history: the Commodore 64}.\\
+   Perry, Wallich,
+   IEEE Spectrum 48-58, March 1985\\
+   http://spectrum.ieee.org/ns/pdfs/commodore64\_mar1985.pdf
+     
+   \bibitem{wiredArticle}
+   \emph{Grandiose Price for a Modest PC}.\\
+   Leander Kahney
+   Wired, 2003
+   http://www.wired.com/culture/lifestyle/news/2003/09/60349
+   
 \end{thebibliography}
 
 \end{document}
