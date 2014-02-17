@@ -36,18 +36,33 @@ foo foo bar
 \subsection{Overview}
 
 \subsection{Memory}
+\paragraph{}
+The Commodore 64's CPU has a 16-bit address space, allowing for 64KiB of possible addresses, although various RAM, ROM, and I/O devices are mapped to the same address space. Access to the various spaces on the Commodore 64 happens through bank switching various device lines. This section will give a brief description of each memory device in general, their typical purpose, and also a map of their locations in address space.
 
 \subsubsection{RAM}
-
-\subsubsection{Color RAM}
+\paragraph{}
+The Commodore 64 ships with 64KiB of DRAM. Various iterations of the device use different chip layouts from different manufacturers, but are otherwise functionally identical. The refresh rate of the DRAM is controlled by the VIC-II video chip, as it operates the system bus' clock.
 
 \subsubsection{ROM}
+\paragraph{}
+\begin{wrapfigure}{l}{0.4\textwidth}
+\begin{center}
+\includegraphics[width=5cm]{c64_basic}
+\end{center}
+\caption{Commodore BASIC startup screen}
+\end{wrapfigure}
+There are three pieces of ROM wired to the Commodore 64: the system KERNAL, a CHARACTER ROM table, and a BASIC interpreter; the latter of the two available to the user. The system KERNAL (locations $\mathtt{\$E000 - \$FFFF}$) serves essentially as a core operating system to the user, and provides low-level management of hardware functionality. The CHARACTER ROM (locations $\mathtt{\$D000 - \$DFFF}$) served as default glyph information for the KERNAL and VIC-II video chip to display text. If the programmer desired, they could use the address space RAM for character glyphs instead of ROM, allowing for custom or modified symbols. Lastly, the Commodore 64 also contained a Commodore BASIC interpreter (locations $\mathtt{\$A000 - \$BFFF}$) on the device. Programs written in BASIC only had 38KiB of memory available to them due to the space taken up by the interpreter, as well as tended to be slower than their assembler counterparts, due to the time transferring between RAM and ROM.
+
+\subsubsection{Color RAM}
+\paragraph{}
+The Commodore 64 can colour characters in its on-screen display by using the system's built-in Color RAM. The Color RAM is 1KB in size, and the first nibble of each byte is used to determine the colour of of each character. Colours are determined with the Commodore 64's built-in fixed colour palette, consisting of 16 possible colours. A programmer wishing to change Color RAM data in Commodore BASIC would often modify the values through the $\mathtt{POKE}$ command, while someone using assembly would need to address the particular section in memory. Color RAM is mapped to locations $\mathtt{\$D800 - \$DBFF}$, when the I/O devices are mapped to memory.
 
 \subsubsection{Memory Map}
+\[\textcolor{red}{FIGURE}\]
 
 \subsection{MOS 6510 CPU}
 \paragraph{}
-The Commodore 64's microprocessor is the MOS Technology 6510, a variant of the 6502 model. Leading up to the years of the Commodore 64's production, the MOS 6502 had become substantially popular in home computer architecture for its comprehensive features while having a fraction of the price of its competitors. This section will describe the Commodore 64's 6510 in two sections. The first being its general features that is has in common with with the 6502, and the second being its unique characteristics.
+The Commodore 64's microprocessor is the MOS Technology 6510, a variant of the 6502 model. Leading up to the years of the Commodore 64's production, the MOS 6502 had become substantially popular in consumer computer architecture for its comprehensive features while having a fraction of the price of its competitors. This section will describe the Commodore 64's 6510 in two sections. The first being its general features that is has in common with with the 6502, and the second being its unique characteristics.
 
 \subsubsection{6502 Family Features}
 
@@ -98,22 +113,69 @@ LDA $000F ; load memory $000F using normal addressing (slower)
 \paragraph{}
 \begin{wrapfigure}{l}{0.35\textwidth}
 \vspace{-20pt}
-\caption{6510 pin layout}
 \begin{center}
 \includegraphics[width=3cm]{6510}
+\caption{6510 pin layout}
 \end{center}
 \end{wrapfigure}
-The MOS Technology 6510 is a variant of the 6502 microprocessor, accompanied with an I/O port of either six or eight bits wide. The Commodore 64 uses the 6-bit version of this port to interact switch between RAM and ROM, as well as access to tertiary memory, such as a datacasette. The 6510 can also make its address lines become tristate, allowing it to share memory with other devices, such as the SID and the VIC-II. Since RAM, ROM, and I/O registers are all mapped to the same address space, the Commodore 64 can distinguish between the three through the $P0$ and $P1$ lines for accessing ROM, and the $P2$ line for the I/O registers. $P3$, $P4$, and $P5$ are used to operate the datacasette.
+The MOS Technology 6510 is a variant of the 6502 microprocessor, accompanied with an I/O port of either six or eight bits wide. The Commodore 64 uses the 6-bit version of this port to interact switch between RAM and ROM, as well as access to tertiary memory, such as a datacasette. The 6510 can also make its address lines become tristate, allowing it to share memory with other devices, such as the SID and the VIC-II. Since RAM, ROM, and I/O registers are all mapped to the same address space, the Commodore 64 can distinguish between the three through the $P0$ and $P1$ lines for accessing ROM and external registers on the SID, CIAs and VIC-II, and the $P2$ line for the I/O registers. $P3$, $P4$, and $P5$ are used to operate a datacasette.
 
+\paragraph{}
+The 6510 operates around 1MHz, with particular differences whether or not it is within a PAL or NTSC model. There are also a number of variants of the 6510, which were used in later models or other Commodore 64 peripherals. A common example, in particular, being the 8502, which operates at 2 MHz, and the 6510T that uses all 8-bits for its I/O lines inside the Commodore 1551 Disk Drive.
 
 \subsection{MOS 6567 VIC-II}
-asdasd
+\paragraph{}
+\begin{wrapfigure}{l}{0.35\textwidth}
+\vspace{-20pt}
+\begin{center}
+\includegraphics[width=3cm]{6567}
+\caption{6567 VIC-II pin layout}
+\end{center}
+\end{wrapfigure}
+The MOS Technology VIC-II is the device tasked with graphical output for the Commodore 64. It consists of two models, the 6567, used in NTSC chipsets, and the 6569 in the PAL ones. The chip is primarily responsible for interpreting various elements of RAM as video memory, then outputting that as composite video signals for a low-cost display, such as a CRT monitor. This section will briefly explain the VIC-II's hardware, rendering modes, and how the device is typically programmed.
+
+\subsubsection{Device}
+\paragraph{}
+The VIC-II to an extent, has the most control over the Commodore 64. The clock for the 6510 CPU is fed from it, which internally has a clock divider. This is because the VIC-II must operate at a higher frequency than the 6510's 1MHz in order to properly output a PAL/NTSC signal. The VIC-II also provides the refresh clock for the Commodore 64's DRAM, allowing faster, more frequent access to render multiple sprites from memory. Also, if the video chip finds itself in need of more time to access memory, it can temporarily "stun" and halt the microprocessor and continue using the system bus. 
+
+\paragraph{}
+The VIC-II has 14 address lines to system memory, and is thus able to access up to 16KiB of memory at a time. Through bank switching with the first CIA on the Commodore 64 though, the device can access all 64KiB. There is a 12-bit bus for the VIC-II, the lower eight bits are used to access the system's main RAM, while the upper four bits are used to access Color RAM. 
+
+\subsubsection{Rendering Modes}
+\paragraph{}
+Five rendering modes are available to the VIC-II, although these can generally categorized into two particular settings: text mode and bitmap mode. Text mode creates a 40x25 character display onscreen. This is what is seen when viewing the iconic Commodore BASIC interpreter. This is created with a character matrix, containing 8-bit pointers to various 8x8 pixel character glyphs in memory. These glyphs may be from CHARACTER ROM, or a custom implementation by the programmer. Bitmap mode, the alternate setting, is typically meant for rich graphical applications, such as computer games. In this mode, byte-sized character data can be drawn to the screen with various colours, as well as having sprites rendered above. The VIC-II could display up to eight independent sprites per TV scan line at a time. Combined, these techniques provided a typical environment for game and multimedia programmers at the time.
+
+\paragraph{}
+A feature the Commodore 64 specifically had for visual applications were \textit{raster interrupts}. Raster interrupts allowed the VIC-II to signal the processor to take control of memory upon reaching a certain scanline, allowing it to alter the VIC-II's registers and memory. This special feature allowed clever assembly programmers to render sprites and text simultaneously on screen, or in some cases show more than eight sprites at a time.
+
+\subsubsection{Programming the VIC-II}
+\paragraph{}
+The VIC-II is manipulated through 47 various control registers, these are mapped throughout memory locations $\mathtt{\$D000 - \$D3FF}$ and repeat every 64 bytes. These control registers correspond to the various aspects of the features of the VIC-II. Examples of the register's functionality include sprite data pointers, onscreen locations, raster interrupt information, as well as color palette information. The VIC-II also contains hardware features to determine if two rendered sprites overlap each other, allowing for a sort of two-dimensional "collision detection".
 
 \subsection{MOS 6581 SID}
-adasdasdasd
+\paragraph{}
+The MOS Technology 6581 Sound Interface Device, or SID is the programmable sound chip used in the Commodore 64. The SID was responsible for creating a variety of synthesized audio for various multimedia applications. While the sounds of the SID are considered quite primitive by today's standards, it's worth noting that they were quite groundbreaking at their time of production. The SID was chiefly designed by Robert Yannes, who was interested in creating a synthesizer for a computer that had more sophisticated audio capabilities. This section will cover the general capabilities of the SID, and how a programmer would typically interact with it.
+
+\subsubsection{Device Features}
+\paragraph{}
+\begin{wrapfigure}{l}{0.4\textwidth}
+\vspace{-20pt}
+\begin{center}
+\includegraphics[width=3.5cm]{6581}
+\caption{6581 SID pin layout}
+\end{center}
+\end{wrapfigure}
+The SID's chief feature was that it allowed for three programmable distinct audio oscillators, each able to produce up to four different sound waveforms (sawtooth waves, triangle waves, pulse waves, as well as white noise). The SID was capable of commanding control of pitch, tone, and dynamics of the sounds it played. The SID also had analog-to-digital input lines, allowing for input from devices such as mice or paddles. Also due to the fact that the device is able to produce white noise, a random number generator is also provided for the 6502 to use. Random numbers and noise are generated through a 23-bit linear feedback shift register.
+
+\paragraph{}
+The 6581 was later revised and produced in later commodore models as the SID 8580, correcting some specification flaws in the original model. Interestingly enough, a number of hobbyist composers for the Commodore 64's SID find the revised model's filters produce a different sound that lacks some of the character that the original 6581 contains.
+
+\subsubsection{Operating the SID}
+Much like the VIC-II, operating the SID is done through a variety of registers available to the programmer from memory. When I/O and devices are bank switched into the address space, the SID's registers can be accessed across $\mathtt{\$D400 - \$D7FF}$. Various features of the registers include voice frequency/pulse width, volume dynamics, filter cutoff, and read-only paddle data.
 
 \subsection{MOS 6526 CIA}
-asdasdas
+\paragraph{}
+The MOS Technology 6526 CIA is the interface chip used in the Commodore 64. Two are found inside the Commodore 64 chipset. Each featured 2 8-bit I/O ports, timers, an 8-bit shift register for serial I/O, and a real-time clock for peripheral devices. It's primary purpose was to interface with the keyboard, joysticks, and external ports for serial devices. The registers for both CIAs can be found across $\mathtt{\$DC00 - \$DCFF}$ and $\mathtt{\$DD00 - \$DDFF}$.
 
 \section{Strengths}
 
